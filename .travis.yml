@@ -11,9 +11,11 @@ jobs:
   include:
     - stage: Testing on linux
       os: linux
+      env: TEST=Test1
       script: echo "test 1 ..."
     - stage: Testing on linux
       os: linux
+      env: TEST=Test2
       script: echo "test 2 ..."
     - stage: Testing on linux
       os: linux
