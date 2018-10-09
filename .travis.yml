@@ -13,18 +13,19 @@ jobs:
       os: linux
       script: echo "test 1 ..."
     - stage: Testing on linux
-      os: osx
+#      os: osx
       script: echo "test 2 ..."
     - stage: Testing on linux
       script: echo "test 3 ..."
-      os: osx
+#      os: osx
     - stage: Testing on osx
-      os: linux
+      os: osx
       script: echo "test 1 ..."
     - stage: Testing on osx
       os: osx
       script: echo "test 2 ..."
     - stage: Testing on osx
+      os: osx
       script: echo "test 3 ..."
     - stage: deploy to staging
       os: osx
