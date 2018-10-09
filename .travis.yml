@@ -16,17 +16,18 @@ jobs:
       language: generic
       os: linux
       env: TEST=Test1
-#      before_script: &before_script_linux echo before script linux
-      before_script: echo before script linux
+      before_script:
+        - git clone https://github.com/flutter/flutter.git -b beta
+        - export PATH="\$PATH":"\$HOME/.pub-cache/bin"
+        - export PATH=\`pwd\`/flutter/bin:\`pwd\`/flutter/bin/cache/dart-sdk/bin:\$PATH
+        - flutter precache
+        - flutter doctor -v
+        - pub global activate coverage
       after_success: echo after success
       script: echo "test 1 ..."
     - <<: *unit-test-staging
       os: osx
       env: TEST=Test1
-#      before_script: &before_script_osx echo before script osx
-      before_script: &before_script_osx
-        - echo before script osx 1
-        - echo before script osx 2
       script: sysctl -a | grep machdep.cpu.features
     - <<: *unit-test-staging
       os: linux
@@ -35,7 +36,6 @@ jobs:
     - <<: *unit-test-staging
       os: osx
       env: TEST=Test2
-      before_script: *before_script_osx
       script: asdasd
     - <<: *unit-test-staging
       os: linux
@@ -47,23 +47,40 @@ jobs:
       script: echo "test 3 ..."
 
 
-    - stage: Integration Tests
+    - &integration-test-staging
+      stage: Integration Testing
+      sudo: false
+      dist: trusty
       os: linux
+      env: INT_TEST=Test1
+      before_install: &before_install_linux
+        - echo before install linux 1
+        - echo before install linux 2
       script: echo "test 1 ..."
-    - stage: Integration Tests
+    - <<: *integration-test-staging
+      os: osx
+      env: INT_TEST=Test1
+      before_install: &before_install_osx
+        - echo before install osx 1
+        - echo before install osx 2
+      script: echo "test 1 ..."
+    - <<: *integration-test-staging
       os: linux
-      script: echo "test 2 ..."
-    - stage: Integration Tests
+      env: INT_TEST=Test2
+      script: xxxx
+    - <<: *integration-test-staging
+      os: osx
+      env: INT_TEST=Test2
+      before_install: *before_install_osx
+      script: xxxx
+    - <<: *integration-test-staging
       os: linux
+      env: INT_TEST=Test3
       script: echo "test 3 ..."
-    - stage: Integration Tests
+    - <<: *integration-test-staging
       os: osx
-      script: echo "test 1 ..."
-    - stage: Integration Tests
-      os: osx
-      script: echo "test 2 ..."
-    - stage: Integration Tests
-      os: osx
+      env: INT_TEST=Test3
+      before_install: *before_install_osx
       script: echo "test 3 ..."
 
 
@@ -86,3 +103,4 @@ jobs:
 
   allow_failures:
     - env: TEST=Test2
+    - env: INT_TEST=Test2
