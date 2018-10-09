@@ -13,15 +13,17 @@ jobs:
 
     - &unit-test-staging
       stage: Unit Testing
+      language: generic
       os: linux
       env: TEST=Test1
-      before_script: echo before script
+      before_script: &before_script_linux echo before script linux
       after_success: echo after success
       script: echo "test 1 ..."
     - <<: *unit-test-staging
       os: osx
       env: TEST=Test1
-      script: echo "test 1 ..."
+      before_script: &before_script_osx echo before script osx
+      script: sysctl -a | grep machdep.cpu.features
     - <<: *unit-test-staging
       os: linux
       env: TEST=Test2
@@ -29,6 +31,7 @@ jobs:
     - <<: *unit-test-staging
       os: osx
       env: TEST=Test2
+      before_script: *before_script_osx
       script: asdasd
     - <<: *unit-test-staging
       os: linux
