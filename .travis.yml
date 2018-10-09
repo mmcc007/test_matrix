@@ -16,40 +16,40 @@ jobs:
   include:
 
 
-    - &unit-test-staging
-      stage: Unit Testing
-      language: generic
-      os: linux
-      env: TEST=Test1
-#      before_script:
-#        - git clone https://github.com/flutter/flutter.git -b beta
-#        - export PATH="$PATH":"$HOME/.pub-cache/bin"
-#        - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
-#        - flutter precache
-#        - flutter doctor -v
-#        - pub global activate coverage
-      after_success: echo after success
-      script: echo "test 1 ..."
-    - <<: *unit-test-staging
-      os: osx
-      env: TEST=Test1
-      script: echo "test 1 ..."
-    - <<: *unit-test-staging
-      os: linux
-      env: TEST=Test2
-      script: xxxx
-    - <<: *unit-test-staging
-      os: osx
-      env: TEST=Test2
-      script: xxxx
-    - <<: *unit-test-staging
-      os: linux
-      env: TEST=Test3
-      script: echo "test 3 ..."
-    - <<: *unit-test-staging
-      os: osx
-      env: TEST=Test3
-      script: echo "test 3 ..."
+#    - &unit-test-staging
+#      stage: Unit Testing
+#      language: generic
+#      os: linux
+#      env: TEST=Test1
+##      before_script:
+##        - git clone https://github.com/flutter/flutter.git -b beta
+##        - export PATH="$PATH":"$HOME/.pub-cache/bin"
+##        - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+##        - flutter precache
+##        - flutter doctor -v
+##        - pub global activate coverage
+#      after_success: echo after success
+#      script: echo "test 1 ..."
+#    - <<: *unit-test-staging
+#      os: osx
+#      env: TEST=Test1
+#      script: echo "test 1 ..."
+#    - <<: *unit-test-staging
+#      os: linux
+#      env: TEST=Test2
+#      script: xxxx
+#    - <<: *unit-test-staging
+#      os: osx
+#      env: TEST=Test2
+#      script: xxxx
+#    - <<: *unit-test-staging
+#      os: linux
+#      env: TEST=Test3
+#      script: echo "test 3 ..."
+#    - <<: *unit-test-staging
+#      os: osx
+#      env: TEST=Test3
+#      script: echo "test 3 ..."
 
 
     - &integration-test-staging
@@ -78,10 +78,10 @@ jobs:
         # Install the rest of tools (e.g., avdmanager)
         - sdkmanager tools
         # Create and start emulator.
-        - sdkmanager "system-images;android-\$EMULATOR_API_LEVEL;\$ANDROID_ABI" >/dev/null
+        - sdkmanager "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI" >/dev/null
         - sdkmanager --list
-        - echo no | avdmanager create avd --force -n test -k "system-images;android-\$EMULATOR_API_LEVEL;\$ANDROID_ABI"
-        - \$ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window -gpu swiftshader &
+        - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
+        - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window
         # Wait for emulator to startup.
         - android-wait-for-emulator
         - adb shell input keyevent 82
