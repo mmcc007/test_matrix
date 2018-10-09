@@ -8,7 +8,10 @@ sudo: false
 os:
   - linux
   - osx
-
+env:
+  - JOB=JOBA
+  - JOB=JOBB
+  - JOB=JOBC
 language: generic
 #matrix:
 #  include:
@@ -22,28 +25,16 @@ jobs:
   include:
     - stage: "Tests"
       name: "Unit Tests"
-      env:
-        - JOB=JOBA
-        - JOB=JOBB
-        - JOB=JOBC
       script:
         - echo job = $JOB
         - echo done
     - stage: "Integration Tests"
       name: "Run driver"
-      env:
-        - JOB=JOBA
-        - JOB=JOBB
-        - JOB=JOBC
       script:
        - echo job = $JOB
        - echo done
     - stage: deploy
       name: "Deploy to Store"
-     env:
-        - JOB=JOBA
-        - JOB=JOBB
-        - JOB=JOBC
       script:
       script: echo Deployed
 
