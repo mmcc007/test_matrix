@@ -13,7 +13,8 @@ jobs:
       os: linux
       script: echo "test 1 ..."
     - stage: Testing
-      script: echo "test 2 ..."
+      os: osx
+     script: echo "test 2 ..."
     - stage: Testing
       script: echo "test 3 ..."
     - stage: deploy to staging
