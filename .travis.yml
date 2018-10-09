@@ -1,42 +1,24 @@
 sudo: false
-#stages:
-##  - compile
-#  - test
-#  - integration
-#  - name: deploy
-#    if: branch = master
-#os:
-#  - linux
-#  - osx
-#env:
-#  - JOB=JOBA
-#  - JOB=JOBB
-#  - JOB=JOBC
-language: generic
-#matrix:
-#  include:
-#    - os: linux
-#      dist: trusty
-#      sudo: required
-#    - os: osx
-#      osx_image: xcode8.0
-#    env: JOB=JOBD
+dist: trusty
+
+rvm:
+  - 2.2
+  - 2.3
+
+script: echo "Running tests ..."
+
 jobs:
   include:
-    - stage: "Tests"
-      name: "Unit Tests"
-      script: echo job = JOBA
-      - script: echo job = JOBB
-      - script: echo job = JOBC
-    - stage: "Integration Tests"
-      name: "Run driver"
-      script: echo job = JOBA
-      - script: echo job = JOBB
-      - script: echo job = JOBC
-    - stage: deploy
-      name: "Deploy to Store"
-      script: echo Deployed
-
-#script:
-#  - echo job = $JOB
-#  - echo done
+    - stage: deploy to staging
+      rvm: 2.3
+      install: skip # bundle install is not required
+      script: echo "Deploying to staging ..."
+    - &test-staging
+      stage: test staging
+      rvm: 2.3
+      install: skip
+      script: echo "Testing staging, shard 1 ..."
+    - <<: *test-staging
+      script: echo "Testing staging, shard 2 ..."
+    - <<: *test-staging
+      script: echo "Testing staging, shard 3 ..."
