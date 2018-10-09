@@ -16,27 +16,27 @@ jobs:
       language: generic
       os: linux
       env: TEST=Test1
-      before_script:
-        - git clone https://github.com/flutter/flutter.git -b beta
-        - export PATH="$PATH":"$HOME/.pub-cache/bin"
-        - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
-        - flutter precache
-        - flutter doctor -v
-        - pub global activate coverage
+#      before_script:
+#        - git clone https://github.com/flutter/flutter.git -b beta
+#        - export PATH="$PATH":"$HOME/.pub-cache/bin"
+#        - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+#        - flutter precache
+#        - flutter doctor -v
+#        - pub global activate coverage
       after_success: echo after success
       script: echo "test 1 ..."
     - <<: *unit-test-staging
       os: osx
       env: TEST=Test1
-      script: sysctl -a | grep machdep.cpu.features
+      script: echo "test 1 ..."
     - <<: *unit-test-staging
       os: linux
       env: TEST=Test2
-      script: asdasd
+      script: xxxx
     - <<: *unit-test-staging
       os: osx
       env: TEST=Test2
-      script: asdasd
+      script: xxxx
     - <<: *unit-test-staging
       os: linux
       env: TEST=Test3
@@ -53,9 +53,31 @@ jobs:
       dist: trusty
       os: linux
       env: INT_TEST=Test1
+      language: android
+      android:
+        components:
+          - tools
+          - platform-tools
+          - tools
+          - build-tools-26.0.2
+          - build-tools-26.0.3
+          - build-tools-27.0.3
+      licenses:
+          - 'android-sdk-license-.+'
       before_install: &before_install_linux
-        - echo before install linux 1
-        - echo before install linux 2
+        - sdkmanager --list
+        - yes | sdkmanager "platforms;android-26" > /dev/null
+        - yes | sdkmanager "platforms;android-27" > /dev/null
+        # Install the rest of tools (e.g., avdmanager)
+        - sdkmanager tools
+        # Create and start emulator.
+        - sdkmanager "system-images;android-\$EMULATOR_API_LEVEL;\$ANDROID_ABI" >/dev/null
+        - sdkmanager --list
+        - echo no | avdmanager create avd --force -n test -k "system-images;android-\$EMULATOR_API_LEVEL;\$ANDROID_ABI"
+        - \$ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window -gpu swiftshader &
+        # Wait for emulator to startup.
+        - android-wait-for-emulator
+        - adb shell input keyevent 82
       script: echo "test 1 ..."
     - <<: *integration-test-staging
       os: osx
