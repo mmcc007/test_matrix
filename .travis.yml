@@ -13,21 +13,23 @@ jobs:
       stage: Unit Testing
       os: linux
       env: TEST=Test1
+      before_script: echo before script
+      after_success: echo after success
       script: echo "test 1 ..."
     - <<: *unit-test-staging
       os: linux
       env: TEST=Test2
       script: echo "test 2 ..."
-    - stage: Unit Testing
+    - <<: *unit-test-staging
       os: linux
       script: echo "test 3 ..."
-    - stage: Unit Testing
+    - <<: *unit-test-staging
       os: osx
       script: echo "test 1 ..."
-    - stage: Unit Testing
+    - <<: *unit-test-staging
       os: osx
       script: echo "test 2 ..."
-    - stage: Unit Testing
+    - <<: *unit-test-staging
       os: osx
       script: echo "test 3 ..."
 
