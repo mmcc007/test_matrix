@@ -24,15 +24,19 @@ jobs:
       script: asdasd
     - <<: *unit-test-staging
       os: linux
+      env: TEST=Test3
       script: echo "test 3 ..."
     - <<: *unit-test-staging
       os: osx
+      env: TEST=Test1
       script: echo "test 1 ..."
     - <<: *unit-test-staging
       os: osx
+      env: TEST=Test2
       script: echo "test 2 ..."
     - <<: *unit-test-staging
       os: osx
+      env: TEST=Test3
       script: echo "test 3 ..."
 
 
