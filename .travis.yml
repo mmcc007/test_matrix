@@ -1,10 +1,10 @@
 sudo: false
-stages:
-#  - compile
-  - test
-  - integration
-  - name: deploy
-    if: branch = master
+#stages:
+##  - compile
+#  - test
+#  - integration
+#  - name: deploy
+#    if: branch = master
 os:
   - linux
   - osx
