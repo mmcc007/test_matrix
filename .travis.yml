@@ -54,10 +54,10 @@ jobs:
 #      script: echo "test 3 ..."
 
 
-    - stage: coverage
-      os: linux
-      # todo: use yaml var for install
-      script: echo "code coverage ..."
+#    - stage: coverage
+#      os: linux
+#      # todo: use yaml var for install
+#      script: echo "code coverage ..."
 
 
     - &integration-test-staging
@@ -67,6 +67,7 @@ jobs:
       os: linux
       env: INT_TEST=Test1
       before_install: &before_install_linux
+        - echo $PATH
         # Install the Android SDK Dependency.
         - ANDROID_SDK_URL="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
         - ANDROID_TOOLS_ROOT="/opt/android_sdk"
@@ -98,7 +99,7 @@ jobs:
         - sdkmanager "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI" >/dev/null
         - sdkmanager --list
         - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
-        - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window
+        - $ANDROID_TOOLS_ROOT/emulator/emulator -avd test -no-audio -no-window
         # Wait for emulator to startup.
         - android-wait-for-emulator
         - adb shell input keyevent 82
