@@ -1,21 +1,21 @@
 sudo: false
 dist: trusty
 
-os:
-  - linux
-  - osx
+#os:
+#  - linux
+#  - osx
 
 script: echo "Running tests ..."
 
 jobs:
   include:
     - stage: deploy to staging
-      os: linux
+      os: osx
       install: skip # bundle install is not required
       script: echo "Deploying to staging ..."
     - &test-staging
       stage: test staging
-      os: linux
+      os: osx
       install: skip
       script: echo "Testing staging, shard 1 ..."
     - <<: *test-staging
