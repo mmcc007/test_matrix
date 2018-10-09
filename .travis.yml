@@ -19,7 +19,7 @@ jobs:
     - <<: *unit-test-staging
       os: linux
       env: TEST=Test2
-      script: echo "test 2 ..."
+      script: asdasd
     - <<: *unit-test-staging
       os: linux
       script: echo "test 3 ..."
@@ -32,6 +32,8 @@ jobs:
     - <<: *unit-test-staging
       os: osx
       script: echo "test 3 ..."
+  allow_failures:
+    - env: TEST=Test2
 
     - stage: Integration Tests
       os: linux
