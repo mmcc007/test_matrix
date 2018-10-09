@@ -9,7 +9,9 @@ script: echo "Running tests ..."
 
 env:
   global:
+    - ANDROID_API_LEVEL=27
     - EMULATOR_API_LEVEL=22
+    - ANDROID_BUILD_TOOLS_VERSION=27.0.3
     - ANDROID_ABI="default;armeabi-v7a"
 
 jobs:
@@ -37,11 +39,11 @@ jobs:
 #    - <<: *unit-test-staging
 #      os: linux
 #      env: TEST=Test2
-#      script: xxxx
+#      script: echo "test 2 ..."
 #    - <<: *unit-test-staging
 #      os: osx
 #      env: TEST=Test2
-#      script: xxxx
+#      script: echo "test 2 ..."
 #    - <<: *unit-test-staging
 #      os: linux
 #      env: TEST=Test3
@@ -52,29 +54,44 @@ jobs:
 #      script: echo "test 3 ..."
 
 
+    - stage: coverage
+      os: linux
+      # todo: use yaml var for install
+      script: echo "code coverage ..."
+
+
     - &integration-test-staging
       stage: Integration Testing
       sudo: false
       dist: trusty
       os: linux
       env: INT_TEST=Test1
-      language: android
-      android:
-        components:
-          - tools
-          - platform-tools
-          - tools
-          - build-tools-26.0.2
-          - build-tools-26.0.3
-          - build-tools-27.0.3
-      licenses:
-          - 'android-sdk-license-.+'
       before_install: &before_install_linux
+        # Install the Android SDK Dependency.
+        - ANDROID_SDK_URL="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
+        - ANDROID_TOOLS_ROOT="/opt/android_sdk"
+        - mkdir -p "${ANDROID_TOOLS_ROOT}"
+        - mkdir -p ~/.android
         # Silence warning.
         - touch ~/.android/repositories.cfg
+        - ANDROID_SDK_ARCHIVE="${ANDROID_TOOLS_ROOT}/archive"
+        - wget --progress=dot:giga "${ANDROID_SDK_URL}" -O "${ANDROID_SDK_ARCHIVE}"
+        - unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_SDK_ARCHIVE}"
+        # Suppressing output of sdkmanager to keep log size down
+        # (it prints install progress WAY too often).
+        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "tools" > /dev/null
+        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "build-tools;28.0.0" > /dev/null
+        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "platforms;android-28" > /dev/null
+        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "platform-tools" > /dev/null
+        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "extras;android;m2repository" > /dev/null
+        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "extras;google;m2repository" > /dev/null
+        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "patcher;v4" > /dev/null
+        - rm "${ANDROID_SDK_ARCHIVE}"
+        - PATH="${ANDROID_TOOLS_ROOT}/tools:${PATH}"
+        - PATH="${ANDROID_TOOLS_ROOT}/tools/bin:${PATH}"
+
+        - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
         - sdkmanager --list
-        - yes | sdkmanager "platforms;android-26" > /dev/null
-        - yes | sdkmanager "platforms;android-27" > /dev/null
         # Install the rest of tools (e.g., avdmanager)
         - sdkmanager tools
         # Create and start emulator.
@@ -131,5 +148,4 @@ jobs:
 
 
   allow_failures:
-    - env: TEST=Test2
     - env: INT_TEST=Test2
