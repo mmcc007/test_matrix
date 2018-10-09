@@ -18,8 +18,8 @@ jobs:
       env: TEST=Test1
       before_script:
         - git clone https://github.com/flutter/flutter.git -b beta
-        - export PATH="\$PATH":"\$HOME/.pub-cache/bin"
-        - export PATH=\`pwd\`/flutter/bin:\`pwd\`/flutter/bin/cache/dart-sdk/bin:\$PATH
+        - export PATH="$PATH":"$HOME/.pub-cache/bin"
+        - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
         - flutter precache
         - flutter doctor -v
         - pub global activate coverage
