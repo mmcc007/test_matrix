@@ -64,6 +64,7 @@ jobs:
       stage: Integration Testing
       sudo: false
       dist: trusty
+      language: generic
       os: linux
       env: INT_TEST=Test1
       before_install: &before_install_linux
@@ -90,6 +91,7 @@ jobs:
         - rm "${ANDROID_SDK_ARCHIVE}"
         - PATH="${ANDROID_TOOLS_ROOT}/tools:${PATH}"
         - PATH="${ANDROID_TOOLS_ROOT}/tools/bin:${PATH}"
+        - ANDROID_HOME=$ANDROID_TOOLS_ROOT
 
         - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
         - sdkmanager --list
@@ -99,6 +101,7 @@ jobs:
         - sdkmanager "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI" >/dev/null
         - sdkmanager --list
         - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
+        - find $ANDROID_HOME -name emulator
         - $ANDROID_TOOLS_ROOT/emulator/emulator -avd test -no-audio -no-window
         # Wait for emulator to startup.
         - android-wait-for-emulator
