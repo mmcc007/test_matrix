@@ -9,6 +9,11 @@ script: echo "Running tests ..."
 
 jobs:
   include:
+    - stage: Testing
+      os: linux
+      script: echo "test 1 ..."
+      script: echo "test 2 ..."
+      script: echo "test 3 ..."
     - stage: deploy to staging
       os: osx
       install: skip # bundle install is not required
