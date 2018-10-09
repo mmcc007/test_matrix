@@ -9,43 +9,46 @@ script: echo "Running tests ..."
 
 jobs:
   include:
-    - stage: Testing on linux
+    - &unit-test-staging
+    - stage: Unit Testing
       os: linux
-      env: TEST=Test1
+      env: Test1
+      before_script: echo before script
+      after_success: echo after success
       script: echo "test 1 ..."
-    - stage: Testing on linux
+    - <<: *unit-test-staging
       os: linux
       env: TEST=Test2
       script: echo "test 2 ..."
-    - stage: Testing on linux
+    - <<: *unit-test-staging
       os: linux
       script: echo "test 3 ..."
-    - stage: Testing on osx
+    - <<: *unit-test-staging
       os: osx
       script: echo "test 1 ..."
-    - stage: Testing on osx
+    - <<: *unit-test-staging
       os: osx
       script: echo "test 2 ..."
-    - stage: Testing on osx
+    - <<: *unit-test-staging
       os: osx
       script: echo "test 3 ..."
 
-    - stage: Integration Tests on linux
+    - stage: Integration Tests
       os: linux
       script: echo "test 1 ..."
-    - stage: Integration Tests on linux
+    - stage: Integration Tests
       os: linux
       script: echo "test 2 ..."
-    - stage: Integration Tests on linux
+    - stage: Integration Tests
       os: linux
       script: echo "test 3 ..."
-    - stage: Integration Tests on osx
+    - stage: Integration Tests
       os: osx
       script: echo "test 1 ..."
-    - stage: Integration Tests on osx
+    - stage: Integration Tests
       os: osx
       script: echo "test 2 ..."
-    - stage: Integration Tests on osx
+    - stage: Integration Tests
       os: osx
       script: echo "test 3 ..."
 
