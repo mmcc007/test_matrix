@@ -9,6 +9,8 @@ script: echo "Running tests ..."
 
 jobs:
   include:
+
+
     - &unit-test-staging
       stage: Unit Testing
       os: linux
@@ -32,8 +34,7 @@ jobs:
     - <<: *unit-test-staging
       os: osx
       script: echo "test 3 ..."
-  allow_failures:
-    - env: TEST=Test2
+
 
     - stage: Integration Tests
       os: linux
@@ -70,3 +71,7 @@ jobs:
       script: echo "Testing staging, shard 2 ..."
     - <<: *test-staging
       script: echo "Testing staging, shard 3 ..."
+
+
+  allow_failures:
+    - env: TEST=Test2
