@@ -6,6 +6,7 @@ env:
   - JOB=JOBA
   - JOB=JOBB
   - JOB=JOBC
+language: generic
 #matrix:
 #  include:
 #    - os: linux
@@ -14,22 +15,22 @@ env:
 #    - os: osx
 #      osx_image: xcode8.0
 #    env: JOB=JOBD
-jobs:
-  include:
-    - stage: "Tests"
-      name: "Unit Tests"
-      script:
-        - echo job = $JOB
-        - echo done
-    - stage: "Integration Tests"
-      name: "Run driver"
-      script:
-       - echo job = $JOB
-       - echo done
-    - stage: deploy
-      name: "Deploy to Store"
-      script: echo Deployed
+#jobs:
+#  include:
+#    - stage: "Tests"
+#      name: "Unit Tests"
+#      script:
+#        - echo job = $JOB
+#        - echo done
+#    - stage: "Integration Tests"
+#      name: "Run driver"
+#      script:
+#       - echo job = $JOB
+#       - echo done
+#    - stage: deploy
+#      name: "Deploy to Store"
+#      script: echo Deployed
 
-#script:
-#  - echo job = $JOB
-#  - echo done
+script:
+  - echo job = $JOB
+  - echo done
