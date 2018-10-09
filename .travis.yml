@@ -24,18 +24,17 @@ language: generic
 jobs:
   include:
     - stage: "Tests"
-#      name: "Unit Tests"
+      name: "Unit Tests"
       script: echo job = JOBA
-      script: echo job = JOBB
-      script: echo job = JOBC
+      - script: echo job = JOBB
+      - script: echo job = JOBC
     - stage: "Integration Tests"
-#      name: "Run driver"
+      name: "Run driver"
       script: echo job = JOBA
-      script: echo job = JOBB
-      script: echo job = JOBC
+      - script: echo job = JOBB
+      - script: echo job = JOBC
     - stage: deploy
       name: "Deploy to Store"
-      script:
       script: echo Deployed
 
 #script:
