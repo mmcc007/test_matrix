@@ -16,13 +16,17 @@ jobs:
       language: generic
       os: linux
       env: TEST=Test1
-      before_script: &before_script_linux echo before script linux
+#      before_script: &before_script_linux echo before script linux
+      before_script: echo before script linux
       after_success: echo after success
       script: echo "test 1 ..."
     - <<: *unit-test-staging
       os: osx
       env: TEST=Test1
-      before_script: &before_script_osx echo before script osx
+#      before_script: &before_script_osx echo before script osx
+      before_script: &before_script_osx
+        - echo before script osx 1
+        - echo before script osx 2
       script: sysctl -a | grep machdep.cpu.features
     - <<: *unit-test-staging
       os: linux
