@@ -10,26 +10,24 @@ script: echo "Running tests ..."
 jobs:
   include:
     - &unit-test-staging
-    - stage: Unit Testing
+      stage: Unit Testing
       os: linux
-      env: Test1
-      before_script: echo before script
-      after_success: echo after success
+      env: TEST=Test1
       script: echo "test 1 ..."
     - <<: *unit-test-staging
       os: linux
       env: TEST=Test2
       script: echo "test 2 ..."
-    - <<: *unit-test-staging
+    - stage: Unit Testing
       os: linux
       script: echo "test 3 ..."
-    - <<: *unit-test-staging
+    - stage: Unit Testing
       os: osx
       script: echo "test 1 ..."
-    - <<: *unit-test-staging
+    - stage: Unit Testing
       os: osx
       script: echo "test 2 ..."
-    - <<: *unit-test-staging
+    - stage: Unit Testing
       os: osx
       script: echo "test 3 ..."
 
