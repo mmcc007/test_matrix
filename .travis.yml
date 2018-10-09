@@ -9,13 +9,21 @@ script: echo "Running tests ..."
 
 jobs:
   include:
-    - stage: Testing
       os: linux
+    - stage: Testing on linux
       script: echo "test 1 ..."
-    - stage: Testing
+    - stage: Testing on linux
       os: osx
-     script: echo "test 2 ..."
-    - stage: Testing
+      script: echo "test 2 ..."
+    - stage: Testing on linux
+      script: echo "test 3 ..."
+      os: osx
+    - stage: Testing on osx
+      script: echo "test 1 ..."
+    - stage: Testing on osx
+      os: osx
+      script: echo "test 2 ..."
+    - stage: Testing on osx
       script: echo "test 3 ..."
     - stage: deploy to staging
       os: osx
