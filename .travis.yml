@@ -9,8 +9,8 @@ script: echo "Running tests ..."
 
 jobs:
   include:
-      os: linux
     - stage: Testing on linux
+      os: linux
       script: echo "test 1 ..."
     - stage: Testing on linux
       os: osx
@@ -19,6 +19,7 @@ jobs:
       script: echo "test 3 ..."
       os: osx
     - stage: Testing on osx
+      os: linux
       script: echo "test 1 ..."
     - stage: Testing on osx
       os: osx
