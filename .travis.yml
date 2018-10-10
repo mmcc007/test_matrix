@@ -83,6 +83,7 @@ jobs:
         - ${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager --list
         - ${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager "tools;26.1.1"
         - ${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager --list
+
         # Suppressing output of sdkmanager to keep log size down
         # (it prints install progress WAY too often).
 #        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "tools" > /dev/null
@@ -93,9 +94,23 @@ jobs:
 #        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "extras;google;m2repository" > /dev/null
 #        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "patcher;v4" > /dev/null
 #        - rm "${ANDROID_SDK_ARCHIVE}"
-#        - PATH="${ANDROID_TOOLS_ROOT}/tools:${PATH}"
-#        - PATH="${ANDROID_TOOLS_ROOT}/tools/bin:${PATH}"
-#        - ANDROID_HOME=$ANDROID_TOOLS_ROOT
+        - PATH="${ANDROID_TOOLS_ROOT}/tools:${PATH}"
+        - PATH="${ANDROID_TOOLS_ROOT}/tools/bin:${PATH}"
+        - ANDROID_HOME=$ANDROID_TOOLS_ROOT
+
+#        # download specific emulator 27.3.10.0 (build_id 4969155)
+#        - ANDROID_EMULATOR_ARCHIVE="${ANDROID_TOOLS_ROOT}/emulator_archive"
+#        - ANDROID_EMULATOR_URL=http://dl.google.com/android/repository/emulator-linux-4969155.zip
+#        - wget --progress=dot:giga ${ANDROID_EMULATOR_URL} -O "${ANDROID_EMULATOR_ARCHIVE}"
+#        - unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_SDK_ARCHIVE}"
+#        - rm "${ANDROID_EMULATOR_ARCHIVE}"
+#        - $ANDROID_HOME/emulator/emulator -version
+        - sdkmanager --list
+        - yes | sdkmanager tools
+        - sdkmanager --list
+        - yes | sdkmanager tools
+        - sdkmanager --list
+
 #
 #        - sdkmanager --list
 #        # uninstall newer packages
