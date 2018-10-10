@@ -81,7 +81,7 @@ jobs:
         - unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_SDK_ARCHIVE}"
         - PATH="${ANDROID_TOOLS_ROOT}/tools:${PATH}"
         - PATH="${ANDROID_TOOLS_ROOT}/tools/bin:${PATH}"
-        - ANDROID_HOME=$ANDROID_TOOLS_ROOT
+        - export ANDROID_HOME=$ANDROID_TOOLS_ROOT
         # Suppressing output of sdkmanager to keep log size down
         # (it prints install progress WAY too often).
         - yes "y" | sdkmanager "tools" > /dev/null
@@ -119,6 +119,7 @@ jobs:
         - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
 
         # install flutter
+        - apt-get install -y --no-install-recommends lib32stdc++6 libstdc++6
         - git clone https://github.com/flutter/flutter.git -b beta
         - export PATH="$PATH":"$HOME/.pub-cache/bin"
         - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
@@ -129,6 +130,7 @@ jobs:
         - PATH="${ANDROID_TOOLS_ROOT}/platform-tools:${PATH}" # add adb to path
         - ./scripts/android-wait-for-emulator.sh
         - adb shell input keyevent 82
+        - flutter devices
       script: echo "test 1 ..."
     - <<: *integration-test-staging
       os: osx
