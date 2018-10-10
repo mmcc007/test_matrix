@@ -98,7 +98,7 @@ jobs:
         - ANDROID_EMULATOR_ARCHIVE="${ANDROID_TOOLS_ROOT}/emulator_archive"
         - ANDROID_EMULATOR_URL=http://dl.google.com/android/repository/emulator-linux-4969155.zip
         - wget --progress=dot:giga ${ANDROID_EMULATOR_URL} -O "${ANDROID_EMULATOR_ARCHIVE}"
-        - echo n | unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_SDK_ARCHIVE}" # don't override license
+        - yes "n" | unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_SDK_ARCHIVE}" # don't override license
         - rm "${ANDROID_EMULATOR_ARCHIVE}"
         - $ANDROID_HOME/emulator/emulator -version
 #        - sdkmanager --list
