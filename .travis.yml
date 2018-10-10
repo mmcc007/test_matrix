@@ -78,55 +78,49 @@ jobs:
         - touch ~/.android/repositories.cfg
         - ANDROID_SDK_ARCHIVE="${ANDROID_TOOLS_ROOT}/archive"
         - wget --progress=dot:giga "${ANDROID_SDK_URL}" -O "${ANDROID_SDK_ARCHIVE}"
-        - unzip -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_SDK_ARCHIVE}"
-
-        # Suppressing output of sdkmanager to keep log size down
-        # (it prints install progress WAY too often).
-#        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "tools" > /dev/null
-#        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "build-tools;28.0.0" > /dev/null
-#        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "platforms;android-28" > /dev/null
-#        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "platform-tools" > /dev/null
-#        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "extras;android;m2repository" > /dev/null
-#        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "extras;google;m2repository" > /dev/null
-#        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "patcher;v4" > /dev/null
-#        - rm "${ANDROID_SDK_ARCHIVE}"
+        - unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_SDK_ARCHIVE}"
         - PATH="${ANDROID_TOOLS_ROOT}/tools:${PATH}"
         - PATH="${ANDROID_TOOLS_ROOT}/tools/bin:${PATH}"
         - ANDROID_HOME=$ANDROID_TOOLS_ROOT
+        # Suppressing output of sdkmanager to keep log size down
+        # (it prints install progress WAY too often).
+        - yes "y" | sdkmanager "tools" > /dev/null
+#        - yes "y" | sdkmanager "build-tools;28.0.0" > /dev/null
+#        - yes "y" | sdkmanager "platforms;android-28" > /dev/null
+        - yes "y" | sdkmanager "platform-tools" > /dev/null
+        - yes "y" | sdkmanager "extras;android;m2repository" > /dev/null
+        - yes "y" | sdkmanager "extras;google;m2repository" > /dev/null
+        - yes "y" | sdkmanager "patcher;v4" > /dev/null
+        - rm "${ANDROID_SDK_ARCHIVE}"
+
         - emulator -version || true
 
         # download specific emulator 27.3.10.0 (build_id 4969155)
         - ANDROID_EMULATOR_ARCHIVE="${ANDROID_TOOLS_ROOT}/emulator_archive"
         - ANDROID_EMULATOR_URL=http://dl.google.com/android/repository/emulator-linux-4969155.zip
         - wget --progress=dot:giga ${ANDROID_EMULATOR_URL} -O "${ANDROID_EMULATOR_ARCHIVE}"
-        - yes "n" | unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_EMULATOR_ARCHIVE}" # don't override license
+        - unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_EMULATOR_ARCHIVE}" # don't override license
         - rm "${ANDROID_EMULATOR_ARCHIVE}"
         - $ANDROID_HOME/emulator/emulator -version
-#        - sdkmanager --list
-#        - yes | sdkmanager tools
-#        - sdkmanager --list
-#        - yes | sdkmanager tools
-#        - sdkmanager --list
+        - sdkmanager --list
 
-#
-#        - sdkmanager --list
 #        # uninstall newer packages
 #        - sdkmanager --uninstall "build-tools;27.0.3" "build-tools;28.0.0" "platforms;android-28"
-#        # install older packages
-#        - yes | sdkmanager "build-tools;25.0.2" "platforms;android-25" "extras;google;google_play_services" > /dev/null
-#        - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
-#        # Install the rest of tools (e.g., avdmanager)
-#        - sdkmanager "tools;26.1.1"
-#        # Create and start emulator.
-#        - sdkmanager "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
-#        - sdkmanager --list
-#        - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
-#        - find $ANDROID_HOME -name emulator
-#        - $ANDROID_TOOLS_ROOT/emulator/emulator -avd test -no-audio -no-window
-##        - emulator -avd test -no-audio -no-window
-#        # Wait for emulator to startup.
-#        - android-wait-for-emulator
-#        - adb shell input keyevent 82
+        - sdkmanager --uninstall "build-tools;27.0.3"
+        # install older packages
+        - yes | sdkmanager "build-tools;25.0.2" "platforms;android-25" "extras;google;google_play_services" > /dev/null
+        - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
+        # Install the rest of tools (e.g., avdmanager)
+        - sdkmanager "tools"
+        # Create and start emulator.
+        - sdkmanager "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
+        - sdkmanager --list
+        - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
+        - find $ANDROID_HOME -name emulator
+        - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window
+        # Wait for emulator to startup.
+        - android-wait-for-emulator
+        - adb shell input keyevent 82
       script: echo "test 1 ..."
     - <<: *integration-test-staging
       os: osx
