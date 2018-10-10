@@ -90,27 +90,27 @@ jobs:
         - yes "y" | sdkmanager "platform-tools" > /dev/null
         - yes "y" | sdkmanager "extras;android;m2repository" > /dev/null
         - yes "y" | sdkmanager "extras;google;m2repository" > /dev/null
-        - yes "y" | sdkmanager "patcher;v4" > /dev/null
+#        - yes "y" | sdkmanager "patcher;v4" > /dev/null
         - rm "${ANDROID_SDK_ARCHIVE}"
 
-        - emulator -version || true
-
         # download specific emulator 27.3.10.0 (build_id 4969155)
-        - ANDROID_EMULATOR_ARCHIVE="${ANDROID_TOOLS_ROOT}/emulator_archive"
-        - ANDROID_EMULATOR_URL=http://dl.google.com/android/repository/emulator-linux-4969155.zip
-        - wget --progress=dot:giga ${ANDROID_EMULATOR_URL} -O "${ANDROID_EMULATOR_ARCHIVE}"
-        - unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_EMULATOR_ARCHIVE}" # don't override license
-        - rm "${ANDROID_EMULATOR_ARCHIVE}"
-        - $ANDROID_HOME/emulator/emulator -version
+#        - ANDROID_EMULATOR_ARCHIVE="${ANDROID_TOOLS_ROOT}/emulator_archive"
+#        - ANDROID_EMULATOR_URL=http://dl.google.com/android/repository/emulator-linux-4969155.zip
+#        - wget --progress=dot:giga ${ANDROID_EMULATOR_URL} -O "${ANDROID_EMULATOR_ARCHIVE}"
+#        - unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_EMULATOR_ARCHIVE}" # don't override license
+#        - rm "${ANDROID_EMULATOR_ARCHIVE}"
+#        - $ANDROID_HOME/emulator/emulator -version
+        - sdkmanager --install emulator
         - sdkmanager --list
 
 #        # uninstall newer packages
 #        - sdkmanager --uninstall "build-tools;27.0.3" "build-tools;28.0.0" "platforms;android-28"
-        - sdkmanager --uninstall "build-tools;27.0.3"
         # install older packages
         - yes | sdkmanager "build-tools;25.0.2" "platforms;android-25" "extras;google;google_play_services" > /dev/null
         - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
-        # Install the rest of tools (e.g., avdmanager)
+        - sdkmanager --uninstall "build-tools;27.0.3"
+        - sdkmanager --list
+      # Install the rest of tools (e.g., avdmanager)
         - sdkmanager "tools"
         # Create and start emulator.
         - sdkmanager "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
@@ -119,7 +119,6 @@ jobs:
         - find $ANDROID_HOME -name emulator
         - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
         # Wait for emulator to startup.
-        - ls -la
         - ./scripts/android-wait-for-emulator.sh
         - adb shell input keyevent 82
       script: echo "test 1 ..."
