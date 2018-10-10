@@ -119,6 +119,7 @@ jobs:
         - find $ANDROID_HOME -name emulator
         - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
         # Wait for emulator to startup.
+        - ls -la
         - ./scripts/android-wait-for-emulator.sh
         - adb shell input keyevent 82
       script: echo "test 1 ..."
