@@ -62,13 +62,14 @@ jobs:
 
     - &integration-test-staging
       stage: Integration Testing
-      sudo: false
+      sudo: true
       dist: trusty
       language: generic
       os: linux
       env: INT_TEST=Test1
       before_install: &before_install_linux
         - echo $PATH
+        - sudo apt-get install -y --no-install-recommends lib32stdc++6 libstdc++6
         # Install the Android SDK Dependency.
         - ANDROID_SDK_URL="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
         - ANDROID_TOOLS_ROOT="/opt/android_sdk"
@@ -113,13 +114,13 @@ jobs:
         # Install the rest of tools (e.g., avdmanager)
 #        - sdkmanager "tools"
         # Create and start emulator.
-        - sdkmanager "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
+        - sdkmanager "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI" > /dev/null
         - sdkmanager --list | head -15
         - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
         - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
 
         # install flutter
-        - apt-get install -y --no-install-recommends lib32stdc++6 libstdc++6
+#        - apt-get install -y --no-install-recommends lib32stdc++6 libstdc++6
         - git clone https://github.com/flutter/flutter.git -b beta
         - export PATH="$PATH":"$HOME/.pub-cache/bin"
         - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
