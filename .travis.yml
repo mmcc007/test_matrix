@@ -93,12 +93,13 @@ jobs:
         - PATH="${ANDROID_TOOLS_ROOT}/tools:${PATH}"
         - PATH="${ANDROID_TOOLS_ROOT}/tools/bin:${PATH}"
         - ANDROID_HOME=$ANDROID_TOOLS_ROOT
+        - emulator -version || true
 
         # download specific emulator 27.3.10.0 (build_id 4969155)
         - ANDROID_EMULATOR_ARCHIVE="${ANDROID_TOOLS_ROOT}/emulator_archive"
         - ANDROID_EMULATOR_URL=http://dl.google.com/android/repository/emulator-linux-4969155.zip
         - wget --progress=dot:giga ${ANDROID_EMULATOR_URL} -O "${ANDROID_EMULATOR_ARCHIVE}"
-        - yes "n" | unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_SDK_ARCHIVE}" # don't override license
+        - yes "n" | unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_EMULATOR_ARCHIVE}" # don't override license
         - rm "${ANDROID_EMULATOR_ARCHIVE}"
         - $ANDROID_HOME/emulator/emulator -version
 #        - sdkmanager --list
