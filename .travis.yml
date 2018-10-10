@@ -93,17 +93,19 @@ jobs:
         - PATH="${ANDROID_TOOLS_ROOT}/tools/bin:${PATH}"
         - ANDROID_HOME=$ANDROID_TOOLS_ROOT
 
-        - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
         - sdkmanager --list
+        # install older packages
+        - yes | sdkmanager "build-tools;25.0.2" "platforms;android-25" "extras;google;google_play_services"
+        - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
         # Install the rest of tools (e.g., avdmanager)
         - sdkmanager tools
         # Create and start emulator.
-        - sdkmanager "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI" >/dev/null
+        - sdkmanager "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
         - sdkmanager --list
-#        - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
-#        - find $ANDROID_HOME -name emulator
-#        - $ANDROID_TOOLS_ROOT/emulator/emulator -avd test -no-audio -no-window
-        - emulator -avd test -no-audio -no-window
+        - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
+        - find $ANDROID_HOME -name emulator
+        - $ANDROID_TOOLS_ROOT/emulator/emulator -avd test -no-audio -no-window
+#        - emulator -avd test -no-audio -no-window
         # Wait for emulator to startup.
         - android-wait-for-emulator
         - adb shell input keyevent 82
