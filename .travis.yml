@@ -80,7 +80,7 @@ jobs:
         - wget --progress=dot:giga "${ANDROID_SDK_URL}" -O "${ANDROID_SDK_ARCHIVE}"
         - unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_SDK_ARCHIVE}"
 
-        - sdkmanager --list
+        - ${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager --list
         # Suppressing output of sdkmanager to keep log size down
         # (it prints install progress WAY too often).
 #        - yes "y" | "${ANDROID_TOOLS_ROOT}/tools/bin/sdkmanager" "tools" > /dev/null
