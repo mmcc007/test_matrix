@@ -100,24 +100,31 @@ jobs:
 #        - unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_EMULATOR_ARCHIVE}" # don't override license
 #        - rm "${ANDROID_EMULATOR_ARCHIVE}"
 #        - $ANDROID_HOME/emulator/emulator -version
-        - sdkmanager --install emulator
-        - sdkmanager --list
+        - sdkmanager --install emulator > /dev/null
+        - sdkmanager --list | head -15
 
 #        # uninstall newer packages
 #        - sdkmanager --uninstall "build-tools;27.0.3" "build-tools;28.0.0" "platforms;android-28"
         # install older packages
         - yes | sdkmanager "build-tools;25.0.2" "platforms;android-25" "extras;google;google_play_services" > /dev/null
-        - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
-        - sdkmanager --uninstall "build-tools;27.0.3"
-        - sdkmanager --list
-      # Install the rest of tools (e.g., avdmanager)
-        - sdkmanager "tools"
+#        - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
+#        - sdkmanager --uninstall "build-tools;27.0.3"
+        - sdkmanager --list | head -15
+        # Install the rest of tools (e.g., avdmanager)
+#        - sdkmanager "tools"
         # Create and start emulator.
         - sdkmanager "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
-        - sdkmanager --list
+        - sdkmanager --list | head -15
         - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API_LEVEL;$ANDROID_ABI"
-        - find $ANDROID_HOME -name emulator
         - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
+
+        # install flutter
+        - git clone https://github.com/flutter/flutter.git -b beta
+        - export PATH="$PATH":"$HOME/.pub-cache/bin"
+        - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+        - flutter precache
+        - flutter doctor -v
+
         # Wait for emulator to startup.
         - PATH="${ANDROID_TOOLS_ROOT}/platform-tools:${PATH}" # add adb to path
         - ./scripts/android-wait-for-emulator.sh
