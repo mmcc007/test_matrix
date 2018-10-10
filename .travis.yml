@@ -94,18 +94,18 @@ jobs:
         - PATH="${ANDROID_TOOLS_ROOT}/tools/bin:${PATH}"
         - ANDROID_HOME=$ANDROID_TOOLS_ROOT
 
-#        # download specific emulator 27.3.10.0 (build_id 4969155)
-#        - ANDROID_EMULATOR_ARCHIVE="${ANDROID_TOOLS_ROOT}/emulator_archive"
-#        - ANDROID_EMULATOR_URL=http://dl.google.com/android/repository/emulator-linux-4969155.zip
-#        - wget --progress=dot:giga ${ANDROID_EMULATOR_URL} -O "${ANDROID_EMULATOR_ARCHIVE}"
-#        - unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_SDK_ARCHIVE}"
-#        - rm "${ANDROID_EMULATOR_ARCHIVE}"
-#        - $ANDROID_HOME/emulator/emulator -version
-        - sdkmanager --list
-        - yes | sdkmanager tools
-        - sdkmanager --list
-        - yes | sdkmanager tools
-        - sdkmanager --list
+        # download specific emulator 27.3.10.0 (build_id 4969155)
+        - ANDROID_EMULATOR_ARCHIVE="${ANDROID_TOOLS_ROOT}/emulator_archive"
+        - ANDROID_EMULATOR_URL=http://dl.google.com/android/repository/emulator-linux-4969155.zip
+        - wget --progress=dot:giga ${ANDROID_EMULATOR_URL} -O "${ANDROID_EMULATOR_ARCHIVE}"
+        - unzip -q -d "${ANDROID_TOOLS_ROOT}" "${ANDROID_SDK_ARCHIVE}"
+        - rm "${ANDROID_EMULATOR_ARCHIVE}"
+        - $ANDROID_HOME/emulator/emulator -version
+#        - sdkmanager --list
+#        - yes | sdkmanager tools
+#        - sdkmanager --list
+#        - yes | sdkmanager tools
+#        - sdkmanager --list
 
 #
 #        - sdkmanager --list
