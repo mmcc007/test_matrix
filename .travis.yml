@@ -95,7 +95,7 @@ jobs:
 
         - sdkmanager --list
         # install older packages
-        - yes | sdkmanager "build-tools;25.0.2" "platforms;android-25" "extras;google;google_play_services"
+        - yes | sdkmanager "build-tools;25.0.2" "platforms;android-25" "extras;google;google_play_services" > /dev/null
         - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
         # Install the rest of tools (e.g., avdmanager)
         - sdkmanager tools
